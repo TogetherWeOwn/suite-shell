@@ -36,31 +36,35 @@ jobs:
           echo "${ACTIONLINT_SHA256}  ${archive}" | sha256sum --check -
           tar -xzf "$archive" -C "$RUNNER_TEMP" actionlint
           "$RUNNER_TEMP/actionlint" -shellcheck= -pyflakes=
-      # Only the initial CI-only tree has no npm project. Any new tracked
-      # path makes the exception fail closed; the package PR removes it.
-      - name: Verify CI-only bootstrap tree
-        if: hashFiles('package.json') == ''
-        run: |
-          set -euo pipefail
-          git ls-files -z | node -e '
-            const actual = require("node:fs").readFileSync(0, "utf8").split("\0").filter(Boolean);
-            const bootstrap = [".github/workflows/ci.yml", ".github/workflows/gitleaks.yml", "LICENSE", "README.md"];
-            if (JSON.stringify(actual) !== JSON.stringify(bootstrap)) {
-              console.error("Expected the CI-only bootstrap tree; a new path requires package.json and all package checks.");
-              process.exitCode = 1;
-            }
-          '
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        if: hashFiles('package.json') != ''
         with:
           node-version: '24'
           package-manager-cache: false
-      - name: Install, lint, typecheck, test and build
-        if: hashFiles('package.json') != ''
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Lint
+        run: npm run lint
+      - name: Build and verify the checked-in distribution
         run: |
           set -euo pipefail
-          npm ci --ignore-scripts
-          npm run lint
-          npm run typecheck
-          npm test
           npm run build
+          if [[ -n "$(git status --porcelain -- dist)" ]]; then
+            git status --short -- dist
+            echo 'Run npm run build and commit the updated dist directory.' >&2
+            exit 1
+          fi
+      - name: Install the Git package without lifecycle scripts
+        run: |
+          set -euo pipefail
+          consumer="$(mktemp -d "$RUNNER_TEMP/suite-shell-consumer.XXXXXX")"
+          npm install --prefix "$consumer" --ignore-scripts --no-audit --no-fund \
+            "git+file://${GITHUB_WORKSPACE}#${GITHUB_SHA}"
+          for file in index.js index.d.ts styles.css tokens.css; do
+            test -s "$consumer/node_modules/suite-shell/dist/$file"
+          done
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Install Chromium for accessibility and UI tests
+        run: npm exec -- playwright install --with-deps chromium
+      - name: Test package exports in Chromium and run unit tests
+        run: npm test
