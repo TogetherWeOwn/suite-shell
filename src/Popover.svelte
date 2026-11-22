@@ -74,7 +74,7 @@
     aria-expanded={open} aria-controls={id} onclick={toggle} bind:this={trigger}>
     {@render icon()}
   </button>
-  <div class="suite-popover-panel" {id} hidden={!open} bind:this={panel}>
+  <div class="suite-popover-panel" {id} hidden={!open} tabindex="-1" bind:this={panel}>
     {@render children(() => close(true))}
   </div>
 </div>

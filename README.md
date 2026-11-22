@@ -4,10 +4,10 @@ Shared Svelte 5 navigation for the Riaklo suite. The package provides a top bar,
 
 ## Install
 
-Pin a Git tag rather than tracking `main`. Installing from Git builds the package with its `prepare` script; allow that script for this dependency in your package manager. The package is not published on npm.
+Pin a Git tag rather than tracking `main`. Once the `v0.1.0` tag is available, use the command below. The distribution is checked in, so consumers can disable lifecycle scripts. The package is not published on npm.
 
 ```sh
-npm install github:TogetherWeOwn/suite-shell#v0.1.0
+npm install --ignore-scripts github:TogetherWeOwn/suite-shell#v0.1.0
 ```
 
 ## Use
@@ -48,7 +48,7 @@ npm install github:TogetherWeOwn/suite-shell#v0.1.0
 - The switcher uses real links: arrows move within the three-column grid, Home and End jump to the first and last apps, and Tab and Enter work as usual. Escape closes a panel and returns focus to its trigger.
 - Provide `accountHref` to override the Account registry link. Wire `onSignOut` to the host application's actual sign-out flow; absent a callback, no sign-out action is rendered. Pass `avatarUrl` on the account object to use an image instead of initials. Component URL props should come from trusted configuration.
 - The `AppSwitcher` and `AccountMenu` exports can also be used separately. `AccountMenu` requires `account` and `accountHref`.
-- The shell follows the system theme by default. Add `data-suite-theme="light"` or `data-suite-theme="dark"` to an ancestor to override the shell without restyling host controls. Import `suite-shell/tokens.css` instead if you only need the `--suite-color-*` variables; to apply the selected palette to app content, set `color-scheme: var(--suite-color-scheme)` on that content. The design uses IBM Plex Sans when the host app supplies it, with a system fallback.
+- The shell follows the system theme by default and honours the console's `data-theme` attribute on `<html>`. Add `data-suite-theme="light"`, `"dark"`, or `"system"` to an ancestor to override it without restyling host controls. Import `suite-shell/tokens.css` instead if you only need the `--suite-color-*` variables. To also let app content's native controls follow the palette, opt in with `color-scheme: var(--suite-color-scheme)`. The shell uses IBM Plex Sans when the host supplies it, with a system fallback.
 
 ## Develop
 
@@ -61,6 +61,6 @@ npm exec -- playwright install chromium
 npm test
 ```
 
-Use Node.js 24 for development. The browser tests exercise keyboard and pointer interactions and fail on serious or critical axe findings in light and dark mode. The styles use `light-dark()`, supported in current Chromium, Firefox, and Safari.
+Use Node.js 24 for development. The browser tests run against a production Vite build and fail on serious or critical axe findings in light and dark mode. After changing `src/`, run `npm run build` and commit the updated `dist/` files; CI checks that they match the source.
 
 MIT; see [LICENSE](LICENSE).

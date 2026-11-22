@@ -44,8 +44,24 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Lint
         run: npm run lint
-      - name: Build
-        run: npm run build
+      - name: Build and verify the checked-in distribution
+        run: |
+          set -euo pipefail
+          npm run build
+          if [[ -n "$(git status --porcelain -- dist)" ]]; then
+            git status --short -- dist
+            echo 'Run npm run build and commit the updated dist directory.' >&2
+            exit 1
+          fi
+      - name: Install the Git package without lifecycle scripts
+        run: |
+          set -euo pipefail
+          consumer="$(mktemp -d "$RUNNER_TEMP/suite-shell-consumer.XXXXXX")"
+          npm install --prefix "$consumer" --ignore-scripts --no-audit --no-fund \
+            "git+file://${GITHUB_WORKSPACE}#${GITHUB_SHA}"
+          for file in index.js index.d.ts styles.css tokens.css; do
+            test -s "$consumer/node_modules/suite-shell/dist/$file"
+          done
       - name: Typecheck
         run: npm run typecheck
       - name: Install Chromium for accessibility and UI tests

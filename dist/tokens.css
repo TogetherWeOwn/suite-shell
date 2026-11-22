@@ -1,0 +1,86 @@
+/* Colour values from the Kofra console tokens (MIT).
+ * Source: https://github.com/TogetherWeOwn/kofra-web/blob/acac05e5565735c60402b949f594d4d391021a07/packages/tokens/tokens.css
+ */
+:root {
+  --suite-font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --suite-shadow-raised: 0 1px 2px rgb(0 0 0 / 0.04), 0 12px 32px -12px rgb(0 0 0 / 0.18);
+  --suite-color-code-ink: #f1f2ee;
+}
+
+:root,
+[data-suite-theme='light'],
+[data-suite-theme='system'] {
+  --suite-color-scheme: light;
+  --suite-color-bg: #ffffff;
+  --suite-color-band: #f6f6f3;
+  --suite-color-surface: #ffffff;
+  --suite-color-surface-2: #ecece7;
+  --suite-color-ink: #121412;
+  --suite-color-ink-2: #3f423d;
+  --suite-color-muted: #5f625c;
+  --suite-color-line: #dadad3;
+  --suite-color-border-strong: #878a83;
+  --suite-color-accent: #1f4fd1;
+  --suite-color-accent-hover: #1a43b3;
+  --suite-color-accent-ink: #ffffff;
+  --suite-color-accent-text: #1d49c2;
+  --suite-color-accent-soft: #e8eefc;
+  --suite-color-focus: #1f4fd1;
+  --suite-color-danger: #b4231b;
+  --suite-color-success: #1b6b33;
+  --suite-color-warning: #8a5a00;
+  --suite-color-code-bg: #121412;
+  --suite-color-mark-ink: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme='light'], [data-suite-theme='light'])),
+  [data-suite-theme='system'] {
+    --suite-color-scheme: dark;
+    --suite-color-bg: #0f100f;
+    --suite-color-band: #141614;
+    --suite-color-surface: #171917;
+    --suite-color-surface-2: #202320;
+    --suite-color-ink: #f1f2ee;
+    --suite-color-ink-2: #c9cbc4;
+    --suite-color-muted: #9a9d95;
+    --suite-color-line: #2c2f2b;
+    --suite-color-border-strong: #6f726b;
+    --suite-color-accent: #6f95ff;
+    --suite-color-accent-hover: #8eacff;
+    --suite-color-accent-ink: #0b0d18;
+    --suite-color-accent-text: #8eacff;
+    --suite-color-accent-soft: #1a2240;
+    --suite-color-focus: #8eacff;
+    --suite-color-danger: #ff7b6e;
+    --suite-color-success: #5fcf7f;
+    --suite-color-warning: #f0b43c;
+    --suite-color-code-bg: #202320;
+    --suite-color-mark-ink: #0b0d18;
+  }
+}
+
+:root:where([data-theme='dark']:not([data-suite-theme='light'], [data-suite-theme='system'])),
+[data-suite-theme='dark'] {
+  --suite-color-scheme: dark;
+  --suite-color-bg: #0f100f;
+  --suite-color-band: #141614;
+  --suite-color-surface: #171917;
+  --suite-color-surface-2: #202320;
+  --suite-color-ink: #f1f2ee;
+  --suite-color-ink-2: #c9cbc4;
+  --suite-color-muted: #9a9d95;
+  --suite-color-line: #2c2f2b;
+  --suite-color-border-strong: #6f726b;
+  --suite-color-accent: #6f95ff;
+  --suite-color-accent-hover: #8eacff;
+  --suite-color-accent-ink: #0b0d18;
+  --suite-color-accent-text: #8eacff;
+  --suite-color-accent-soft: #1a2240;
+  --suite-color-focus: #8eacff;
+  --suite-color-danger: #ff7b6e;
+  --suite-color-success: #5fcf7f;
+  --suite-color-warning: #f0b43c;
+  --suite-color-code-bg: #202320;
+  --suite-color-mark-ink: #0b0d18;
+}

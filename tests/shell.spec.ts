@@ -87,6 +87,32 @@ test('standalone disclosures stay within the viewport at either edge', async ({ 
   }
 });
 
+test('Escape dismisses a panel after a pointer click on its heading', async ({ page }) => {
+  await page.goto('/');
+  const trigger = page.getByRole('button', { name: 'Suite apps' });
+  await trigger.click();
+  await page.getByRole('heading', { name: 'Apps', exact: true }).click();
+  await page.keyboard.press('Escape');
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  await expect(trigger).toBeFocused();
+});
+
+for (const { name, colorScheme, query, background } of [
+  { name: 'system dark', colorScheme: 'dark', query: '', background: 'rgb(20, 22, 20)' },
+  { name: 'console light', colorScheme: 'dark', query: '?host-theme=light', background: 'rgb(246, 246, 243)' },
+  { name: 'console dark', colorScheme: 'light', query: '?host-theme=dark', background: 'rgb(20, 22, 20)' },
+  { name: 'explicit shell theme', colorScheme: 'light', query: '?host-theme=light&theme=dark', background: 'rgb(20, 22, 20)' },
+] as const) {
+  test(`${name}: preview preserves compiled console colours`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme });
+    await page.goto(`/${query}`);
+    await expect(page.getByRole('banner')).toHaveCSS('background-color', background);
+    if (name === 'system dark') {
+      await expect(page.locator('.fixture')).toHaveCSS('background-color', 'rgb(15, 16, 15)');
+    }
+  });
+}
+
 test('the sign-out action can be scrolled fully into view at high zoom', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 160 });
   await page.goto('/');

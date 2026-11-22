@@ -1,0 +1,22 @@
+import type { Snippet } from 'svelte';
+import { type AppIcon, type SuiteApp } from './registry.js';
+import type { AccountIdentity } from './account.js';
+type $$ComponentProps = {
+    productName: string;
+    productHref: string;
+    productIcon?: AppIcon;
+    currentAppId?: string;
+    apps?: readonly SuiteApp[];
+    search?: Snippet;
+    account?: AccountIdentity;
+    accountHref?: string;
+    settingsHref?: string;
+    settingsLabel?: string;
+    onMenuClick?: () => void;
+    menuExpanded?: boolean;
+    menuControls?: string;
+    onSignOut?: () => void;
+};
+declare const TopBar: import("svelte").Component<$$ComponentProps, {}, "">;
+type TopBar = ReturnType<typeof TopBar>;
+export default TopBar;

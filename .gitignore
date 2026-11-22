@@ -1,5 +1,5 @@
 node_modules/
 .svelte-kit/
-dist/
+/tests/fixture/dist/
 playwright-report/
 test-results/

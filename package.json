@@ -22,8 +22,7 @@
     "lint": "eslint .",
     "typecheck": "svelte-check --tsconfig ./tsconfig.json",
     "test": "node --disable-warning=ExperimentalWarning --test tests/*.test.ts && playwright test",
-    "build": "svelte-package -i src -o dist",
-    "prepare": "npm run build"
+    "build": "svelte-package -i src -o dist"
   },
   "peerDependencies": {
     "svelte": "^5.20.0"

@@ -4,7 +4,7 @@ import globals from 'globals';
 import ts from 'typescript-eslint';
 
 export default [
-  { ignores: ['.svelte-kit/**', 'dist/**', 'test-results/**', 'playwright-report/**'] },
+  { ignores: ['.svelte-kit/**', '**/dist/**', 'test-results/**', 'playwright-report/**'] },
   js.configs.recommended,
   ...ts.configs.recommended,
   ...svelte.configs.recommended,

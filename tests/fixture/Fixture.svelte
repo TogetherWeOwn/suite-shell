@@ -6,7 +6,9 @@
     { id: 'docs', label: 'Docs', href: 'https://docs.example.com', icon: 'docs' },
   ]);
   const query = new URLSearchParams(window.location.search);
-  const theme = query.get('theme') ?? 'system';
+  const theme = query.get('theme') ?? undefined;
+  const hostTheme = query.get('host-theme');
+  if (hostTheme) document.documentElement.dataset.theme = hostTheme;
   const standalone = query.has('standalone');
   const account = { name: 'Example Member', email: 'member@example.com' };
   let navOpen = $state(false);
@@ -52,8 +54,8 @@
   :global(body) { margin: 0; }
   .fixture {
     min-height: 100vh;
-    background: white;
-    color: black;
+    background: var(--suite-color-bg);
+    color: var(--suite-color-ink);
     font-family: var(--suite-font-family);
   }
   .standalone { display: flex; justify-content: space-between; padding: 8px; }

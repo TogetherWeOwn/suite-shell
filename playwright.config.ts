@@ -10,7 +10,7 @@ export default defineConfig({
   forbidOnly: true,
   use: { browserName: 'chromium', baseURL },
   webServer: {
-    command: `npm exec -- vite --host 127.0.0.1 --port ${port} --strictPort`,
+    command: `npm exec -- vite build && npm exec -- vite preview --host 127.0.0.1 --port ${port} --strictPort`,
     url: baseURL,
   },
 });
