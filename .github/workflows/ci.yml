@@ -44,11 +44,11 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Lint
         run: npm run lint
+      - name: Build
+        run: npm run build
       - name: Typecheck
         run: npm run typecheck
       - name: Install Chromium for accessibility and UI tests
         run: npm exec -- playwright install --with-deps chromium
-      - name: Test
+      - name: Test package exports in Chromium and run unit tests
         run: npm test
-      - name: Build
-        run: npm run build

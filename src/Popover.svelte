@@ -19,13 +19,27 @@
   }
 
   function fitPanel() {
-    if (!open) return;
+    if (!open || !panel || !trigger) return;
     panel.style.removeProperty('--suite-panel-shift');
-    const { left, right } = panel.getBoundingClientRect();
+    panel.style.removeProperty('--suite-panel-max-height');
+    const bounds = panel.getBoundingClientRect();
+    const anchor = trigger.getBoundingClientRect();
+    const { clientWidth, clientHeight } = document.documentElement;
     const edge = 8;
-    const viewport = document.documentElement.clientWidth;
-    const shift = left < edge ? edge - left : Math.min(0, viewport - edge - right);
-    if (shift) panel.style.setProperty('--suite-panel-shift', `${shift}px`);
+    const gap = 4;
+    const x = bounds.left < edge ? edge - bounds.left : Math.min(0, clientWidth - edge - bounds.right);
+
+    // On short screens, the panel can cover the search row, but must not
+    // cover its own trigger. Standalone controls can also open upwards.
+    let top = Math.min(bounds.top, Math.max(anchor.bottom + gap, clientHeight - 160));
+    let available = clientHeight - edge - top;
+    const above = anchor.top - gap - edge;
+    if (available < Math.min(96, bounds.height) && above > available) {
+      available = Math.min(bounds.height, above);
+      top = anchor.top - gap - available;
+    }
+    panel.style.setProperty('--suite-panel-shift', `${x}px ${top - bounds.top}px`);
+    panel.style.setProperty('--suite-panel-max-height', `${Math.max(0, available)}px`);
   }
 
   async function toggle() {

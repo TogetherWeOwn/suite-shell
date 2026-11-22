@@ -124,7 +124,7 @@
   z-index: 1;
   translate: var(--suite-panel-shift, 0px);
   inline-size: min(340px, calc(100vw - 32px));
-  max-block-size: min(28rem, 65vh);
+  max-block-size: min(28rem, 65vh, var(--suite-panel-max-height, 100vh));
   overflow: auto;
   padding: 16px;
   border: 1px solid var(--suite-color-line);

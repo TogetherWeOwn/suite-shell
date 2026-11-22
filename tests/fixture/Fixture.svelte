@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { AccountMenu, AppSwitcher, TopBar, createAppRegistry, defaultRegistry } from '../../src/index.js';
+  import { AccountMenu, AppSwitcher, TopBar, createAppRegistry, defaultRegistry } from 'suite-shell';
 
   const apps = createAppRegistry([
     ...defaultRegistry.map((app) => app.id === 'drive' ? { ...app, href: 'https://drive.example.com' } : app),
@@ -52,8 +52,8 @@
   :global(body) { margin: 0; }
   .fixture {
     min-height: 100vh;
-    background: var(--suite-color-bg);
-    color: var(--suite-color-ink);
+    background: white;
+    color: black;
     font-family: var(--suite-font-family);
   }
   .standalone { display: flex; justify-content: space-between; padding: 8px; }

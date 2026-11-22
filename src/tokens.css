@@ -31,4 +31,3 @@
 [data-suite-theme='light'] { --suite-color-scheme: light; }
 [data-suite-theme='dark'] { --suite-color-scheme: dark; }
 [data-suite-theme='system'] { --suite-color-scheme: light dark; }
-[data-suite-theme] { color-scheme: var(--suite-color-scheme); }

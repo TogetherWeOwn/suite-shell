@@ -87,6 +87,24 @@ test('standalone disclosures stay within the viewport at either edge', async ({ 
   }
 });
 
+test('the sign-out action can be scrolled fully into view at high zoom', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 160 });
+  await page.goto('/');
+  const trigger = page.getByRole('button', { name: 'Account menu' });
+  await trigger.click();
+  const signOut = page.getByRole('button', { name: 'Sign out' });
+  await signOut.scrollIntoViewIfNeeded();
+  await expect(signOut).toBeInViewport({ ratio: 1 });
+  await signOut.click();
+  await expect(page.getByRole('status')).toHaveText('Sign-out requested');
+});
+
+test('a shell theme override does not restyle native host controls', async ({ page }) => {
+  await page.goto('/?theme=dark');
+  await expect(page.getByRole('banner')).toHaveCSS('color-scheme', 'dark');
+  await expect(page.getByRole('button', { name: 'Outside' })).toHaveCSS('color-scheme', 'normal');
+});
+
 for (const theme of ['light', 'dark'] as const) {
   test(`${theme}: no serious or critical axe violations in either panel`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: theme === 'light' ? 'dark' : 'light' });
